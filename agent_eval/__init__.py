@@ -158,8 +158,7 @@ class AgentEval:
         limit: int = 100,
     ) -> list[dict]:
         """Get tool call traces with optional filtering"""
-        traces = self._traces
-        if agent_id:
+        if not isinstance(limit, int) or isinstance(limit, bool) or limit < 1:\n            raise ValueError("limit must be a positive integer")\n        traces = self._traces\n        if agent_id:
             traces = [t for t in traces if t.agent_id == agent_id]
         if tool_name:
             traces = [t for t in traces if t.tool_name == tool_name]
