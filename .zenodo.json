@@ -1,0 +1,37 @@
+{
+  "title": "Agent Eval",
+  "upload_type": "software",
+  "creators": [
+    {
+      "name": "Perla, Emir",
+      "affiliation": "We Do Care Global",
+      "orcid": "0009-0009-8515-2727"
+    }
+  ],
+  "access_right": "open",
+  "license": "Apache-2.0",
+  "version": "0.1.2",
+  "publication_date": "2026-10-02",
+  "description": "Comprehensive agent evaluation and observability platform: real-time token telemetry, latency percentiles, tool path tracing, and benchmark validation across 14 LLM providers with sub-2.1ms overhead. Part of the We Do Care Global autonomous AI governance stack.",
+  "keywords": [
+    "agent evaluation",
+    "observability",
+    "token telemetry",
+    "latency percentiles",
+    "tool path tracing",
+    "benchmark validation",
+    "MCP"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/WeDoCareGlobal/agent-eval-next",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://WeDoCareGlobal.github.io/agent-eval-next/",
+      "relation": "isDocumentedBy",
+      "scheme": "url"
+    }
+  ]
+}

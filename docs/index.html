@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" class="wdcg-system-page wdcg-system-eval">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Eval — Agent Evaluation & Observability | We Do Care Global</title>
+<meta name="description" content="Agent Eval by We Do Care Global: comprehensive agent evaluation, real-time token telemetry, latency benchmarks, tool path tracing, and benchmark validation. Apache-2.0, ORCID 0009-0009-8515-2727.">
+<meta name="author" content="Emir Perla — We Do Care Global — ORCID 0009-0009-8515-2727">
+<meta name="theme-color" content="#07080c">
+<link rel="canonical" href="https://we-do-care-global.github.io/agent-eval/">
+<link rel="icon" href="assets/logo.jpg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="We Do Care Global">
+<meta property="og:title" content="Agent Eval — Agent Evaluation & Observability">
+<meta property="og:description" content="Measure agent performance, observe tool usage, and continuously evaluate RAG, policy, and workflow outputs.">
+<meta property="og:url" content="https://we-do-care-global.github.io/agent-eval/">
+<meta property="og:image" content="https://raw.githubusercontent.com/we-do-care-global/we-do-care-global/main/public/logo.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Agent Eval — Agent Evaluation & Observability">
+<meta name="twitter:description" content="Agent evaluation, token telemetry, latency benchmarks, tool tracing.">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/we-do-care-global/we-do-care-global/main/public/logo.jpg">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Agent Eval","applicationCategory":"DeveloperApplication","operatingSystem":"Cross-platform","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Person","name":"Emir Perla","sameAs":["https://orcid.org/0009-0009-8515-2727"]},"publisher":{"@type":"Organization","name":"We Do Care Global"},"license":"https://www.apache.org/licenses/LICENSE-2.0","codeRepository":"https://github.com/we-do-care-global/agent-eval"}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="templates/brand-system/wdcg-brand-system.css">
+
+<style>
+.wdcg-system-hero { max-width: 1100px; margin: 0 auto; padding: 120px 24px 80px; text-align: center; }
+.wdcg-system-hero h1 { font-family: var(--wdcg-font-display); font-size: 3.4rem; font-weight: 400; color: var(--wdcg-system-color); letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 24px; }
+.wdcg-system-hero .tagline { font-size: 1.15rem; color: var(--wdcg-text-2); max-width: 660px; margin: 18px auto 0; }
+.wdcg-system-hero .badges { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 26px; }
+.wdcg-system-hero .badge { font-family: var(--wdcg-font-mono); font-size: 0.72rem; padding: 5px 10px; border-radius: 6px; background: var(--wdcg-bg-1); border: 1px solid var(--wdcg-line); color: var(--wdcg-text-3); }
+.wdcg-system-hero .badge b { color: var(--wdcg-text); font-weight: 500; }
+.wdcg-system-hero .cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 28px; }
+.wdcg-system-section { max-width: 1100px; margin: 0 auto; padding: 56px 24px; border-top: 1px solid var(--wdcg-line); }
+.wdcg-system-section h2 { font-family: var(--wdcg-font-display); font-size: 2rem; font-weight: 400; color: var(--wdcg-text); margin-bottom: 10px; }
+.wdcg-system-section .lead { color: var(--wdcg-text-2); max-width: 640px; margin-bottom: 32px; }
+.wdcg-system-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+.wdcg-system-card { background: var(--wdcg-bg-1); border: 1px solid var(--wdcg-line); border-radius: var(--wdcg-r); padding: 26px; transition: transform var(--wdcg-dur-fast), border-color var(--wdcg-dur-fast); }
+.wdcg-system-card:hover { transform: translateY(-3px); border-color: var(--wdcg-system-color); }
+.wdcg-system-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; color: var(--wdcg-system-color); }
+.wdcg-system-card p { color: var(--wdcg-text-2); font-size: 0.92rem; margin: 0; }
+.wdcg-system-pre { background: var(--wdcg-bg-1); border: 1px solid var(--wdcg-line); border-radius: var(--wdcg-r); padding: 20px; overflow: auto; font-family: var(--wdcg-font-mono); font-size: 0.82rem; line-height: 1.7; color: var(--wdcg-text); }
+.wdcg-system-pre .c { color: var(--wdcg-text-3); }
+.wdcg-system-pre .k { color: var(--wdcg-system-color); }
+.wdcg-system-pre .s { color: #8fd6c0; }
+.wdcg-system-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.wdcg-system-chip { font-family: var(--wdcg-font-mono); font-size: 0.72rem; padding: 5px 11px; border-radius: 999px; background: var(--wdcg-bg-1); border: 1px solid var(--wdcg-line); color: var(--wdcg-text-3); }
+.wdcg-system-footer { border-top: 1px solid var(--wdcg-line); padding: 40px 24px; text-align: center; color: var(--wdcg-text-3); font-size: 0.9rem; }
+.wdcg-system-footer .seal { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 14px; }
+.wdcg-system-footer .seal img { width: 36px; height: 36px; border-radius: 50%; box-shadow: 0 4px 20px rgba(217, 169, 95, 0.35); }
+</style>
+</head>
+<body>
+
+<nav class="wdcg-nav">
+  <div class="wdcg-nav__brand" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+    <div class="wdcg-brand-seal-wrapper">
+      <img src="https://raw.githubusercontent.com/we-do-care-global/we-do-care-global/main/public/logo.jpg" 
+           onerror="if(this.src!=='https://we-do-care-global.github.io/we-do-care-global/assets/logo.jpg'){this.src='https://we-do-care-global.github.io/we-do-care-global/assets/logo.jpg';}else{this.src='assets/logo.jpg';}" 
+           alt="We Do Care Global" class="wdcg-brand-seal-img">
+    </div>
+    <div>
+      <div class="wdcg-nav__title">Agent Eval</div>
+      <div class="wdcg-nav__sub">We Do Care Global · Agent Evaluation & Observability</div>
+    </div>
+  </div>
+
+  <div class="wdcg-nav__links">
+    <a href="https://we-do-care-global.github.io/we-do-care-global/" class="wdcg-nav__link">← WDCG Portal</a>
+    <div class="wdcg-dropdown">
+      <button class="wdcg-dropdown__btn" type="button"> Sister Platforms ▾ </button>
+      <div class="wdcg-dropdown__menu">
+        <a class="wdcg-dropdown__item" href="https://we-do-care-global.github.io/agentguard/" target="_blank" rel="noopener"><div class="wdcg-dropdown__item-ico" style="color:var(--wdcg-color-guard)">🛡️</div><div><div class="wdcg-dropdown__item-name">AgentGuard</div><div class="wdcg-dropdown__item-sub">Security & Policy Control Plane</div></div></a>
+        <a class="wdcg-dropdown__item" href="https://foundationcentar-demo-rkwero.v2.appdeploy.ai/" target="_blank" rel="noopener"><div class="wdcg-dropdown__item-ico" style="color:var(--wdcg-color-foundation)">🏛️</div><div><div class="wdcg-dropdown__item-name">FoundationCentar</div><div class="wdcg-dropdown__item-sub">One-Click Multi-Agent Factory</div></div></a>
+        <a class="wdcg-dropdown__item" href="https://we-do-care-global.github.io/enterprise-hybrid-rag/" target="_blank" rel="noopener"><div class="wdcg-dropdown__item-ico" style="color:var(--wdcg-color-rag)">🔍</div><div><div class="wdcg-dropdown__item-name">Enterprise Hybrid-RAG</div><div class="wdcg-dropdown__item-sub">NVIDIA NeMo Dense/Sparse Search</div></div></a>
+        <a class="wdcg-dropdown__item" href="https://we-do-care-global.github.io/agent-eval/" target="_blank" rel="noopener"><div class="wdcg-dropdown__item-ico" style="color:var(--wdcg-color-eval)">📊</div><div><div class="wdcg-dropdown__item-name">Agent Eval</div><div class="wdcg-dropdown__item-sub">Observability & Token Telemetry</div></div></a>
+        <a class="wdcg-dropdown__item" href="https://we-do-care-global.github.io/agentvault/" target="_blank" rel="noopener"><div class="wdcg-dropdown__item-ico" style="color:var(--wdcg-color-vault)">🔐</div><div><div class="wdcg-dropdown__item-name">AgentVault</div><div class="wdcg-dropdown__item-sub">Zero-Trust Secrets & Tools</div></div></a>
+        <a class="wdcg-dropdown__item" href="https://we-do-care-global.github.io/pharma-intelligence-os/" target="_blank" rel="noopener"><div class="wdcg-dropdown__item-ico" style="color:var(--wdcg-color-pharma)">💊</div><div><div class="wdcg-dropdown__item-name">Pharma Intelligence OS</div><div class="wdcg-dropdown__item-sub">Pharmacovigilance & FDA Safety</div></div></a>
+      </div>
+    </div>
+    <a href="#features" class="wdcg-nav__link">Features</a>
+    <a href="#quickstart" class="wdcg-nav__link">Quickstart</a>
+    <a href="#evidence" class="wdcg-nav__link">Evidence</a>
+  </div>
+
+  <div class="wdcg-nav__actions">
+    <button class="wdcg-theme-btn" id="themeBtn" type="button" aria-label="Toggle Theme">☾</button>
+    <a class="wdcg-btn wdcg-btn-primary" href="https://github.com/we-do-care-global/agent-eval" target="_blank" rel="noopener" style="padding: 8px 16px; font-size: 0.82rem;">GitHub ↗</a>
+  </div>
+</nav>
+
+<header class="wdcg-system-hero">
+  <h1>Agent Eval<br><span style="color:var(--wdcg-system-color)">Agent Evaluation & Observability Platform</span></h1>
+  <p class="tagline">Measure agent performance, observe tool usage, and continuously evaluate RAG, policy, and workflow outputs.</p>
+  <div class="badges">
+    <span class="badge">Apache 2.0</span>
+    <span class="badge"><b>ORCID:</b> 0009-0009-8515-2727</span>
+    <span class="badge"><b>Version:</b> v0.1.2</span>
+    <span class="badge"><b>DOI:</b> 10.5281/zenodo.23108384</span>
+  </div>
+  <div class="cta">
+    <a class="wdcg-btn wdcg-btn-primary" href="https://github.com/we-do-care-global/agent-eval" target="_blank" rel="noopener">Star on GitHub ↗</a>
+    <a class="wdcg-btn wdcg-btn-outline" href="#quickstart">Quickstart →</a>
+    <a class="wdcg-btn wdcg-btn-live" href="https://we-do-care-global.github.io/agent-eval/" target="_blank" rel="noopener">Live App ↗</a>
+  </div>
+</header>
+
+<main>
+  <section class="wdcg-system-section" id="problem">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center">
+      <div>
+        <h2>The Problem</h2>
+        <p style="color:var(--wdcg-text-2);line-height:1.7">Agents run in production with no visibility into: <strong>How many tokens did this agent burn?</strong> <strong>Which tools failed and why?</strong> <strong>Is latency degrading?</strong> <strong>Are we getting the right answers?</strong> Most teams fly blind until something breaks.</p>
+      </div>
+      <div style="background:var(--wdcg-bg-1);border:1px solid var(--wdcg-line);border-radius:var(--wdcg-r);padding:24px">
+        <h3 style="margin-bottom:12px;color:var(--wdcg-system-color)">Agent Eval answers</h3>
+        <ul style="color:var(--wdcg-text-2);line-height:2">
+          <li>Per-agent latency, token usage, success rate, error classification</li>
+          <li>Full tool-call tracing (input/output/decision/approved-by)</li>
+          <li>Continuous benchmark scenarios for RAG, policy, workflow quality</li>
+          <li>Shared audit log format with AgentGuard for unified governance</li>
+          <li>Real-time WebSocket telemetry stream + dashboard</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="wdcg-system-section" id="features">
+    <h2>Features</h2>
+    <p class="lead">Observability built for autonomous agent fleets.</p>
+    <div class="wdcg-system-cards">
+      <article class="wdcg-system-card"><h3>Agent Metrics</h3><p>Latency percentiles, token usage (prompt/completion/total), success rate, error taxonomy per agent.</p></article>
+      <article class="wdcg-system-card"><h3>Tool Observability</h3><p>Trace every tool call: input, output, decision (allowed/denied/approval), duration, caller.</p></article>
+      <article class="wdcg-system-card"><h3>Continuous Eval</h3><p>Run benchmark scenarios on schedule. Track RAG quality, policy compliance, workflow correctness over time.</p></article>
+      <article class="wdcg-system-card"><h3>Audit Integration</h3><p>Shared log format with AgentGuard. Single source of truth for governance + observability.</p></article>
+      <article class="wdcg-system-card"><h3>Live Dashboard</h3><p>Real-time WebSocket stream. Token cost graphs, latency distributions, tool-path sankey.</p></article>
+      <article class="wdcg-system-card"><h3>Multi-Provider</h3><p>Supports 14+ LLM providers (OpenAI, Anthropic, NVIDIA, xAI, Mistral, local, etc.)</p></article>
+    </div>
+  </section>
+
+  <section class="wdcg-system-section" id="architecture">
+    <h2>Architecture</h2>
+    <div class="wdcg-system-pre"><pre>
+┌─────────────────────────────────────────────────────────────┐
+│                    AGENT EVAL PLATFORM                      │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────────┐  │
+│  │  Metrics     │  │  Tracing     │  │  Benchmarks      │  │
+│  │  Collector   │  │  Exporter    │  │  Runner          │  │
+│  └──────────────┘  └──────────────┘  └──────────────────┘  │
+└─────────────────────────────────────────────────────────────┘
+         │                  │                  │
+         ▼                  ▼                  ▼
+┌──────────────┐  ┌──────────────┐  ┌──────────────────┐
+│  AgentGuard  │  │  OpenTelemetry│  │  Dashboard       │
+│  Audit Log   │  │  (OTLP)      │  │  (WebSocket)     │
+│  (shared)    │  │              │  │                  │
+└──────────────┘  └──────────────┘  └──────────────────┘
+         │                  │
+         └──────────────────┼──────────────────┐
+                            ▼                  ▼
+                   ┌────────────────┐  ┌────────────────┐
+                   │  Storage       │  │  Alerting      │
+                   │  (TimescaleDB) │  │  (Thresholds)  │
+                   └────────────────┘  └────────────────┘</pre></div>
+    <div class="wdcg-system-chips">
+      <span class="wdcg-system-chip">Python 3.11+</span>
+      <span class="wdcg-system-chip">FastAPI</span>
+      <span class="wdcg-system-chip">OpenTelemetry</span>
+      <span class="wdcg-system-chip">TimescaleDB</span>
+      <span class="wdcg-system-chip">WebSocket</span>
+      <span class="wdcg-system-chip">pytest</span>
+      <span class="wdcg-system-chip">Docker Compose</span>
+    </div>
+  </section>
+
+  <section class="wdcg-system-section" id="quickstart">
+    <h2>Quickstart</h2>
+    <div class="wdcg-system-pre"><pre><code>git clone https://github.com/we-do-care-global/agent-eval.git
+cd agent-eval
+pip install -e .
+# Configure .env for providers
+pytest --eval-scenarios scenarios/
+# Or run server:
+uvicorn agent_eval.server:app --reload
+# Dashboard at http://localhost:8080</code></pre></div>
+  </section>
+
+  <section class="wdcg-system-section" id="evidence">
+    <h2>Evidence & Research</h2>
+    <p class="lead">Open work. Permanent record.</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+      <a class="wdcg-btn wdcg-btn-outline" href="https://github.com/we-do-care-global/agent-eval" target="_blank" rel="noopener"><b>GitHub</b><br><span style="font-size:0.75rem">Source & releases ↗</span></a>
+      <a class="wdcg-btn wdcg-btn-outline" href="https://orcid.org/0009-0009-8515-2727" target="_blank" rel="noopener"><b>ORCID</b><br><span style="font-size:0.75rem">Author record ↗</span></a>
+      <a class="wdcg-btn wdcg-btn-outline" href="https://zenodo.org/communities/we-do-care-global" target="_blank" rel="noopener"><b>Zenodo</b><br><span style="font-size:0.75rem">Research archive ↗</span></a>
+      <a class="wdcg-btn wdcg-btn-primary" href="https://doi.org/10.5281/zenodo.23108384" target="_blank" rel="noopener"><b>DOI</b><br><span style="font-size:0.75rem">10.5281/zenodo.23108384 ↗</span></a>
+    </div>
+  </section>
+</main>
+
+<footer class="wdcg-system-footer">
+  <div class="seal">
+    <img src="https://raw.githubusercontent.com/we-do-care-global/we-do-care-global/main/public/logo.jpg" 
+         onerror="if(this.src!=='https://we-do-care-global.github.io/we-do-care-global/assets/logo.jpg'){this.src='https://we-do-care-global.github.io/we-do-care-global/assets/logo.jpg';}else{this.src='assets/logo.jpg';}" 
+         alt="We Do Care Global">
+  </div>
+  <p>Agent Eval v0.1.2 — <a href="https://github.com/we-do-care-global/agent-eval" target="_blank" rel="noopener">GitHub</a> · <a href="https://orcid.org/0009-0009-8515-2727" target="_blank" rel="noopener">ORCID</a> · Apache 2.0</p>
+  <p style="margin-top:8px;font-size:0.8rem">Part of <a href="https://we-do-care-global.github.io/we-do-care-global/" target="_blank">We Do Care Global</a> · Sarajevo · 33% Humanitarian Pledge</p>
+</footer>
+
+<script>
+(() => {
+  const root = document.documentElement;
+  const btn = document.getElementById('themeBtn');
+  const saved = localStorage.getItem('wdcg-theme');
+  if (saved) root.dataset.theme = saved;
+  btn.textContent = root.dataset.theme === 'light' ? '☾' : '☼';
+  btn.addEventListener('click', () => {
+    const next = root.dataset.theme === 'light' ? 'dark' : 'light';
+    root.dataset.theme = next;
+    localStorage.setItem('wdcg-theme', next);
+    btn.textContent = next === 'light' ? '☾' : '☼';
+  });
+})();
+</script>
+</body>
+</html>

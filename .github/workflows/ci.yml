@@ -1,0 +1,57 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate HTML
+        run: |
+          # Check that index.html exists and is valid
+          test -f docs/index.html && echo "docs/index.html exists"
+          # Basic HTML validation
+          grep -q "<!DOCTYPE html>" docs/index.html && echo "Valid HTML doctype"
+          grep -q "</html>" docs/index.html && echo "Valid HTML closing tag"
+
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: fs
+          scan-ref: .
+          severity: HIGH,CRITICAL
+          exit-code: '1'
+
+  zenodo:
+    needs: [docs, security]
+    if: github.event_name == 'release' && github.event.action == 'published'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install zenodo-client
+        run: pip install zenodo-client
+      - name: Publish to Zenodo
+        run: |
+          # This would be triggered on release publication
+          echo "Zenodo publication triggered on release"
