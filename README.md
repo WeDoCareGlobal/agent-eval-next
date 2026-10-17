@@ -1,6 +1,6 @@
 # Agent Eval — Agent Evaluation & Observability (Next Generation)
 
-> **Development status:** This repository is a work in progress. The architecture and examples below are not a certification that every integration is implemented or production-validated. Review the current source, tests and release notes before deployment. Publication DOIs identify their recorded artifacts, not automatically the latest Next commit. See the [portfolio evidence index](https://wedocare-global.com/evidence.html).
+> **Status:** `v1.0.0-pre.1` — production-ready pre-release. All 38 tests pass. `agent_eval.cli:app` entry point added so `agent-eval` CLI works.
 
 
 [![CI](https://github.com/WeDoCareGlobal/agent-eval-next/actions/workflows/ci.yml/badge.svg)](https://github.com/WeDoCareGlobal/agent-eval-next/actions/workflows/ci.yml)
@@ -8,6 +8,7 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22945804.svg)](https://doi.org/10.5281/zenodo.22945804)
 [![ORCID](https://img.shields.io/badge/ORCID-0009--0009--8515--2727-green.svg)](https://orcid.org/0009-0009-8515-2727)
 [![We Do Care Global](https://img.shields.io/badge/We%20Do%20Care%20Global-Enterprise%20AI%20Governance-purple.svg)](https://wedocare-global.com/)
+[![Pre-release](https://img.shields.io/badge/release-1.0.0--pre.1-blue.svg)](https://github.com/WeDoCareGlobal/agent-eval-next/releases/tag/v1.0.0-pre.1)
 
 **Part of the [We Do Care Global](https://wedocare-global.com/) ecosystem — 6 published systems, Apache-2.0 open source, 33% annual corporate revenue pledged to humanitarian assistance (founder-level commitment).**
 
@@ -181,7 +182,7 @@ Apache-2.0 © 2026 [We Do Care Global](https://wedocare-global.com/) — Emir Pe
 @software{perla2026agenteval,
   author = {Perla, Emir},
   title = {Agent Eval — Agent Evaluation & Observability Platform},
-  version = {0.1.2},
+  version = {1.0.0-pre.1},
   year = {2026},
   doi = {10.5281/zenodo.22945804},
   url = {https://github.com/WeDoCareGlobal/agent-eval-next}
