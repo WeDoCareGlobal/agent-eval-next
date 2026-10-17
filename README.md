@@ -1,12 +1,15 @@
 # Agent Eval — Agent Evaluation & Observability (Next Generation)
 
+> **Development status:** This repository is a work in progress. The architecture and examples below are not a certification that every integration is implemented or production-validated. Review the current source, tests and release notes before deployment. Publication DOIs identify their recorded artifacts, not automatically the latest Next commit. See the [portfolio evidence index](https://wedocare-global.com/evidence.html).
+
+
 [![CI](https://github.com/WeDoCareGlobal/agent-eval-next/actions/workflows/ci.yml/badge.svg)](https://github.com/WeDoCareGlobal/agent-eval-next/actions/workflows/ci.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22945804.svg)](https://doi.org/10.5281/zenodo.22945804)
 [![ORCID](https://img.shields.io/badge/ORCID-0009--0009--8515--2727-green.svg)](https://orcid.org/0009-0009-8515-2727)
 [![We Do Care Global](https://img.shields.io/badge/We%20Do%20Care%20Global-Enterprise%20AI%20Governance-purple.svg)](https://wedocare-global.com/)
 
-**Part of the [We Do Care Global](https://wedocare-global.com/) ecosystem — 6 published systems, Apache-2.0 open source, 33% profits → humanitarian.**
+**Part of the [We Do Care Global](https://wedocare-global.com/) ecosystem — 6 published systems, Apache-2.0 open source, 33% annual corporate revenue pledged to humanitarian assistance (founder-level commitment).**
 
 ---
 
@@ -19,7 +22,7 @@
 - **Error classification** — timeout, policy violation, rate limit, unknown
 - **Continuous evaluation suite** — benchmark scenarios tracking RAG/workflow quality over time
 - **AgentGuard audit integration** — shared audit log format with `WeDoCareGlobal/agentguard-next`
-- **Sub-2.1ms overhead** — production-ready observability across 14+ LLM providers
+- **Performance and provider coverage** — must be measured and verified for the configured adapters; no overhead or provider-count guarantee is asserted here
 
 ---
 
