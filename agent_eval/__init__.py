@@ -56,6 +56,7 @@ class AgentMetrics:
     denied_calls: int = 0
     approval_calls: int = 0
     total_tokens: int = 0
+    token_observations: int = 0
     total_latency_ms: float = 0.0
     errors: dict = field(default_factory=lambda: {e.value: 0 for e in ErrorClass})
     tool_usage: dict = field(default_factory=dict)
@@ -77,7 +78,8 @@ class AgentMetrics:
             "allowed_calls": self.allowed_calls,
             "denied_calls": self.denied_calls,
             "approval_calls": self.approval_calls,
-            "total_tokens": self.total_tokens,
+            "total_tokens": self.total_tokens if self.token_observations else None,
+            "token_observations": self.token_observations,
             "avg_latency_ms": round(self.avg_latency_ms, 2),
             "success_rate": round(self.success_rate, 4),
             "errors": self.errors,
@@ -110,6 +112,10 @@ class AgentEval:
         metadata: Optional[dict] = None,
     ) -> ToolCall:
         """Record a single tool call. Thread-safe."""
+        # Token usage must be observed, not inferred from missing metadata.
+        tokens = (metadata or {}).get("tokens")
+        if tokens is not None and (isinstance(tokens, bool) or not isinstance(tokens, int) or tokens < 0):
+            raise ValueError("metadata.tokens must be a non-negative integer or omitted")
         with self._lock:
             now = datetime.now(timezone.utc).isoformat()
             call = ToolCall(
@@ -131,6 +137,9 @@ class AgentEval:
             m = self._metrics[agent_id]
             m.total_calls += 1
             m.total_latency_ms += duration_ms
+            if tokens is not None:
+                m.total_tokens += tokens
+                m.token_observations += 1
             m.last_updated = now
 
             if decision == ToolDecision.ALLOWED:
@@ -206,8 +215,14 @@ class AgentEval:
         if not traces_a or not traces_b:
             raise ValueError(f"need traces for both agents; got {len(traces_a)} / {len(traces_b)}")
 
-        values_a = [t.duration_ms for t in traces_a] if metric == "duration_ms" else [t.metadata.get("tokens", 0) for t in traces_a] if metric == "tokens" else [t.duration_ms for t in traces_a]
-        values_b = [t.duration_ms for t in traces_b] if metric == "duration_ms" else [t.metadata.get("tokens", 0) for t in traces_b] if metric == "tokens" else [t.duration_ms for t in traces_b]
+        if metric == "tokens":
+            if any(t.metadata.get("tokens") is None for t in traces_a + traces_b):
+                raise ValueError("token comparison requires observed token counts for every trace")
+            values_a = [t.metadata["tokens"] for t in traces_a]
+            values_b = [t.metadata["tokens"] for t in traces_b]
+        else:
+            values_a = [t.duration_ms for t in traces_a]
+            values_b = [t.duration_ms for t in traces_b]
 
         from .statistics import welch_ttest
         res = welch_ttest(values_a, values_b, alpha=alpha)
@@ -229,6 +244,7 @@ class AgentEval:
             total_denied = sum(m.denied_calls for m in all_metrics)
             total_approval = sum(m.approval_calls for m in all_metrics)
             total_tokens = sum(m.total_tokens for m in all_metrics)
+            token_observations = sum(m.token_observations for m in all_metrics)
             total_latency = sum(m.total_latency_ms for m in all_metrics)
 
             return {
@@ -237,7 +253,8 @@ class AgentEval:
                 "allowed_calls": total_allowed,
                 "denied_calls": total_denied,
                 "approval_calls": total_approval,
-                "total_tokens": total_tokens,
+                "total_tokens": total_tokens if token_observations else None,
+                "token_observations": token_observations,
                 "avg_latency_ms": round(total_latency / max(total_calls, 1), 2),
                 "overall_success_rate": round(total_successful / max(total_calls, 1), 4),
                 "agents": {aid: m.to_dict() for aid, m in self._metrics.items()},

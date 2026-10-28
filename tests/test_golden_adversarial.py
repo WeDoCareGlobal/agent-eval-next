@@ -27,7 +27,7 @@ class TestGoldenPath(unittest.TestCase):
         ev.record_tool_call("write", "a", duration_ms=5.0)
         m = ev.get_metrics("a")
         self.assertEqual(m["tool_usage"], {"read": 1, "write": 1})
-        self.assertEqual(m["total_tokens"], 0)
+        self.assertIsNone(m["total_tokens"])
 
     def test_golden_path_artifact(self):
         ev = AgentEval()
