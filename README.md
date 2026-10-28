@@ -1,6 +1,11 @@
 # Agent Eval — Agent Evaluation & Observability (Next Generation)
 
-> **Status:** `v1.0.0-pre.1` — production-ready pre-release. All 38 tests pass. `agent_eval.cli:app` entry point added so `agent-eval` CLI works.
+> **Engineering focus:** Evaluation, tracing and reproducible agent assessment.
+>
+> **Evidence boundary:** Local metrics do not establish production performance.
+>
+> [Project overview](https://www.wedocare-global.com/agent-eval.html) · [Evidence index](https://www.wedocare-global.com/evidence.html) · [Portfolio](https://github.com/WeDoCareGlobal)
+
 
 
 [![CI](https://github.com/WeDoCareGlobal/agent-eval-next/actions/workflows/ci.yml/badge.svg)](https://github.com/WeDoCareGlobal/agent-eval-next/actions/workflows/ci.yml)
