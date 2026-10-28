@@ -28,3 +28,29 @@ class EvaluationTests(unittest.TestCase):
 
     def test_empty_summary(self):
         self.assertEqual(AgentEval().summary()["overall_success_rate"], 0)
+
+    def test_observed_token_usage_and_unknown(self):
+        ev = AgentEval()
+        self.assertIsNone(ev.summary()["total_tokens"])
+        ev.record_tool_call("read", "a")
+        self.assertIsNone(ev.get_metrics("a")["total_tokens"])
+        ev.record_tool_call("read", "a", metadata={"tokens": 12})
+        self.assertEqual(ev.get_metrics("a")["total_tokens"], 12)
+        self.assertEqual(ev.get_metrics("a")["token_observations"], 1)
+        self.assertEqual(ev.summary()["total_tokens"], 12)
+        ev.record_tool_call("read", "b", metadata={"tokens": 0})
+        self.assertEqual(ev.get_metrics("b")["total_tokens"], 0)
+
+    def test_invalid_token_usage_is_rejected_atomically(self):
+        ev = AgentEval()
+        for bad in (-1, 1.5, True, "3"):
+            with self.assertRaises(ValueError):
+                ev.record_tool_call("read", "a", metadata={"tokens": bad})
+        self.assertEqual(ev.summary()["total_calls"], 0)
+
+    def test_token_comparison_rejects_unknown(self):
+        ev = AgentEval()
+        ev.record_tool_call("read", "a")
+        ev.record_tool_call("read", "b", metadata={"tokens": 2})
+        with self.assertRaisesRegex(ValueError, "observed token counts"):
+            ev.compare_agents("a", "b", metric="tokens")
