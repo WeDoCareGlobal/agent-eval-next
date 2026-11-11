@@ -1,8 +1,8 @@
 """Step 4: AgentEval golden-path + adversarial + policy + regression test types."""
 
-import json
 import unittest
-from agent_eval import AgentEval, ToolDecision, ErrorClass, eval_harness
+
+from agent_eval import AgentEval, ErrorClass, ToolDecision
 
 
 class TestGoldenPath(unittest.TestCase):
@@ -50,15 +50,14 @@ class TestAdversarial(unittest.TestCase):
 
     def test_adversarial_many_threads(self):
         ev = AgentEval()
-        threads = []
         def worker():
             for _ in range(100):
                 ev.record_tool_call("read", "a", duration_ms=1.0)
         import concurrent.futures
         with concurrent.futures.ThreadPoolExecutor(max_workers=10) as ex:
             futures = [ex.submit(worker) for _ in range(10)]
-            for f in concurrent.futures.wait(futures):
-                pass
+            for future in futures:
+                future.result()
         m = ev.get_metrics("a")
         self.assertEqual(m["total_calls"], 1000)
         self.assertEqual(m["successful_calls"], 1000)
@@ -86,6 +85,8 @@ class TestAdversarial(unittest.TestCase):
         agents = ["agent-1", "agent-2", "agent-3"]
         with concurrent.futures.ThreadPoolExecutor(max_workers=4) as ex:
             futures = [ex.submit(worker, a) for a in agents for _ in range(1)]
+            for future in futures:
+                future.result()
         all_metrics = ev.get_metrics()
         for aid, m in all_metrics.items():
             self.assertEqual(m["total_calls"], 200)
