@@ -7,6 +7,7 @@ suite for RAG and workflow outputs.
 
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![ORCID](https://img.shields.io/badge/ORCID-0009--0009--8515--2727-green.svg)](https://orcid.org/0009-0009-8515-2727)
+[![DataCite ORCID](https://img.shields.io/badge/DataCite%20ORCID-0009--0009--8515--2727-blue.svg)](https://commons.datacite.org/orcid.org/0009-0009-8515-2727)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22945804.svg)](https://doi.org/10.5281/zenodo.22945804)
 [![We Do Care Global](https://img.shields.io/badge/We%20Do%20Care%20Global-Enterprise%20AI%20Governance-purple.svg)](https://wedocare-global.com/)
 
