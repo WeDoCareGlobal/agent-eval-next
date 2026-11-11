@@ -88,6 +88,6 @@ class TestAdversarial(unittest.TestCase):
             for future in futures:
                 future.result()
         all_metrics = ev.get_metrics()
-        for aid, m in all_metrics.items():
+        for m in all_metrics.values():
             self.assertEqual(m["total_calls"], 200)
             self.assertEqual(m["successful_calls"], 200)
