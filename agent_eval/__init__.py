@@ -299,7 +299,7 @@ class UnifiedObservabilityHarness:
 
     def __init__(self, service_name: str = "agent-eval"):
         self._eval = AgentEval()
-        self._otel_tracer = None
+        self._otel_tracer: Optional["OpenTelemetryTracer"] = None
         self._service_name = service_name
 
     # -- record -------------------------------------------------------
@@ -370,7 +370,7 @@ class UnifiedObservabilityHarness:
 
         `cases` maps agent_id to a list of golden-path case dicts.
         """
-        report = {"golden_path": {}, "statistics": {}, "otlp": []}
+        report: dict[str, Any] = {"golden_path": {}, "statistics": {}, "otlp": []}
         for agent_id, cases_list in cases.items():
             report["golden_path"][agent_id] = self.golden_path(agent_id, cases_list)
         return report
