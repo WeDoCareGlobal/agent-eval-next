@@ -1,6 +1,8 @@
 import json
 import unittest
-from agent_eval import AgentEval, ToolDecision, ErrorClass
+
+from agent_eval import AgentEval, ErrorClass, ToolDecision
+
 
 class EvaluationTests(unittest.TestCase):
     def test_error_is_not_success(self):

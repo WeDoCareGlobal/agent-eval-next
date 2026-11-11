@@ -1,12 +1,13 @@
 """Step 8: AgentEval statistical comparison with Welch's t-test (alpha 0.05)."""
 
 import unittest
+
 from agent_eval import AgentEval
 from agent_eval.statistics import (
+    StatisticalError,
     mean,
     variance,
     welch_ttest,
-    StatisticalError,
 )
 
 

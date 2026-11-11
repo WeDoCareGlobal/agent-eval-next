@@ -1,26 +1,29 @@
 # CODE_OF_CLAUDE.md
 
-This file defines the conventions and expectations for AI-assisted coding in agent-eval.
+This file defines the conventions and expectations for AI-assisted coding in agent-eval-next.
 
 ## AI Agent Conventions
 
 ### When AI agents (Claude, Codex, etc.) work on this repository:
 
-1. **Follow the existing patterns** — Read existing code before writing new code. Match the style, structure, and conventions already present. This is a documentation-first project with static HTML docs.
+1. **Follow the existing patterns** — Read existing code before writing new code. Match the style, structure, and conventions already present.
 
-2. **Write tests first** — Every new feature or bug fix must include tests. Target ≥80% coverage if code is added.
+2. **Write tests first** — Every new feature or bug fix must include tests. Target ≥80% coverage.
 
 3. **Run the full CI locally before pushing** — Execute:
    ```bash
-   # For docs validation
-   test -f docs/index.html
-   grep -q "<!DOCTYPE html>" docs/index.html
+   pip install --break-system-packages pytest pytest-cov ruff mypy bandit safety
+   ruff check .
+   mypy . --ignore-missing-imports
+   python -m pytest tests/ -v --cov=. --cov-fail-under=80
+   bandit -r .
+   safety check
    ```
 
 4. **Update documentation** — If you change behavior, update:
    - `CHANGELOG.md` (under `[Unreleased]`)
-   - `docs/index.html` for user-facing documentation
-   - README.md for project overview
+   - Relevant docstrings and README sections
+   - API docs
 
 5. **Use conventional commits** — Prefix commits with:
    - `feat:` new feature
@@ -30,28 +33,29 @@ This file defines the conventions and expectations for AI-assisted coding in age
    - `test:` adding or modifying tests
    - `chore:` maintenance (deps, config, etc.)
 
-6. **Security first** — Never commit secrets. Use environment variables for configuration. Run security scans (trivy) before merging.
+6. **Security first** — Never commit secrets. Use environment variables for configuration. Run security scans (bandit, safety, trivy) before merging.
 
-7. **Documentation standards** — The docs site is the primary deliverable:
-   - Validate HTML structure
-   - Keep ORCID (0009-0009-8515-2727) in footer
-   - Maintain Apache 2.0 license header
-
-8. **No silent failures** — All errors must be logged and surfaced appropriately.
+7. **No silent failures** — All errors must be logged and surfaced appropriately. Use structured logging.
 
 ## Code Review Checklist for AI Contributions
 
-- [ ] Documentation updated (docs/index.html, README.md)
+- [ ] Tests added and passing (≥80% coverage)
+- [ ] Linting passes (ruff)
+- [ ] Type checking passes (mypy)
+- [ ] Security scans pass (bandit, safety, trivy)
 - [ ] CHANGELOG.md updated
-- [ ] CI passes (docs validation, trivy scan)
+- [ ] Documentation updated
 - [ ] No hardcoded secrets
 - [ ] Conventional commit messages
 
 ## Prohibited Patterns
 
+- ❌ `print()` for logging (use `logging` module)
+- ❌ Bare `except:` clauses
 - ❌ Hardcoded paths, URLs, or credentials
-- ❌ Skipping CI to "make it pass"
-- ❌ Modifying generated files
+- ❌ Skipping tests to "make CI pass"
+- ❌ Adding dependencies without updating lockfiles
+- ❌ Modifying generated files (OpenAPI specs, etc.)
 - ❌ Committing directly to `main` (use PRs)
 
 ## Escalation

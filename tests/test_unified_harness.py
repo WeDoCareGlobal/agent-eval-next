@@ -1,13 +1,8 @@
 """Step 9 & 10: AgentEval OpenTelemetry tracing + unified observability harness."""
 
 import unittest
-from agent_eval import (
-    AgentEval,
-    UnifiedObservabilityHarness,
-    OpenTelemetryTracer,
-    ToolDecision,
-    ErrorClass,
-)
+
+from agent_eval import AgentEval, OpenTelemetryTracer, UnifiedObservabilityHarness
 
 
 class TestOpenTelemetryTracer(unittest.TestCase):
@@ -99,7 +94,6 @@ class TestUnifiedObservabilityHarness(unittest.TestCase):
 
     def test_start_tracing_with_service_name(self):
         # Verify start_tracing accepts a service name
-        old = self.harness._otel_tracer
         tracer = OpenTelemetryTracer(self.harness._eval, service_name="protocol-test")
         self.assertEqual(tracer._service_name, "protocol-test")
         tracer.shutdown()

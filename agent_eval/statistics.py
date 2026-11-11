@@ -14,7 +14,7 @@ several different population variances are involved". Biometrika.
 from __future__ import annotations
 
 import math
-from typing import Iterable, Sequence
+from collections.abc import Iterable
 
 
 class StatisticalError(RuntimeError):

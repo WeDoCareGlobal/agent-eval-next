@@ -8,14 +8,13 @@ Measures agent performance (latency, token usage, success rate, error classifica
 and traces every tool call (allowed / denied / approval).
 """
 
-import threading
-import time
-import json
 import hashlib
-from dataclasses import dataclass, field, asdict
-from typing import Any, Optional
+import json
+import threading
+from dataclasses import asdict, dataclass, field
+from datetime import UTC, datetime
 from enum import Enum
-from datetime import datetime, timezone
+from typing import Any
 
 
 class ToolDecision(Enum):
@@ -37,7 +36,7 @@ class ToolCall:
     """Single tool call trace."""
     tool_name: str
     agent_id: str
-    timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    timestamp: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
     duration_ms: float = 0.0
     decision: ToolDecision = ToolDecision.ALLOWED
     input_hash: str = ""
@@ -60,7 +59,7 @@ class AgentMetrics:
     total_latency_ms: float = 0.0
     errors: dict = field(default_factory=lambda: {e.value: 0 for e in ErrorClass})
     tool_usage: dict = field(default_factory=dict)
-    last_updated: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    last_updated: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
 
     @property
     def avg_latency_ms(self) -> float:
@@ -109,7 +108,7 @@ class AgentEval:
         input_data: Any = None,
         output_data: Any = None,
         error: ErrorClass = ErrorClass.NONE,
-        metadata: Optional[dict] = None,
+        metadata: dict | None = None,
     ) -> ToolCall:
         """Record a single tool call. Thread-safe."""
         # Token usage must be observed, not inferred from missing metadata.
@@ -117,7 +116,7 @@ class AgentEval:
         if tokens is not None and (isinstance(tokens, bool) or not isinstance(tokens, int) or tokens < 0):
             raise ValueError("metadata.tokens must be a non-negative integer or omitted")
         with self._lock:
-            now = datetime.now(timezone.utc).isoformat()
+            now = datetime.now(UTC).isoformat()
             call = ToolCall(
                 tool_name=tool_name,
                 agent_id=agent_id,
@@ -159,7 +158,7 @@ class AgentEval:
 
             return call
 
-    def get_metrics(self, agent_id: Optional[str] = None) -> dict:
+    def get_metrics(self, agent_id: str | None = None) -> dict:
         """Get metrics for one or all agents"""
         if agent_id:
             if agent_id in self._metrics:
@@ -169,9 +168,9 @@ class AgentEval:
 
     def get_traces(
         self,
-        agent_id: Optional[str] = None,
-        tool_name: Optional[str] = None,
-        decision: Optional[ToolDecision] = None,
+        agent_id: str | None = None,
+        tool_name: str | None = None,
+        decision: ToolDecision | None = None,
         limit: int = 100,
     ) -> list[dict]:
         """Get tool call traces with optional filtering. Thread-safe."""
@@ -299,13 +298,13 @@ class UnifiedObservabilityHarness:
 
     def __init__(self, service_name: str = "agent-eval"):
         self._eval = AgentEval()
-        self._otel_tracer = None
+        self._otel_tracer: OpenTelemetryTracer | None = None
         self._service_name = service_name
 
     # -- record -------------------------------------------------------
     def record(self, agent_id: str, tool_name: str, duration_ms: float = 0.0,
                decision: str = "allowed", error: str = "none", metadata: dict | None = None):
-        from agent_eval import ToolDecision, ErrorClass
+        from agent_eval import ErrorClass, ToolDecision
         if error == "none":
             err = ErrorClass.NONE
         else:
@@ -354,7 +353,7 @@ class UnifiedObservabilityHarness:
             "service": self._service_name,
             "total_calls": self._eval.summary()["total_calls"],
             "agents": self._eval.summary()["agents"],
-            "statistics": self._eval.summary()["statistics"] if "statistics" in self._eval.summary() else {},
+            "statistics": self._eval.summary().get("statistics", {}),
         }
         if fmt == "json":
             return json.dumps(data, indent=2, default=str)
@@ -370,7 +369,7 @@ class UnifiedObservabilityHarness:
 
         `cases` maps agent_id to a list of golden-path case dicts.
         """
-        report = {"golden_path": {}, "statistics": {}, "otlp": []}
+        report: dict[str, Any] = {"golden_path": {}, "statistics": {}, "otlp": []}
         for agent_id, cases_list in cases.items():
             report["golden_path"][agent_id] = self.golden_path(agent_id, cases_list)
         return report
@@ -380,9 +379,9 @@ class UnifiedObservabilityHarness:
 # ------------------------------------------------------------------
 try:
     from opentelemetry import trace
+    from opentelemetry.sdk.resources import Resource
     from opentelemetry.sdk.trace import TracerProvider
     from opentelemetry.sdk.trace.export import BatchSpanProcessor
-    from opentelemetry.sdk.resources import Resource
     from opentelemetry.trace import StatusCode
 
     _OTEL_AVAILABLE = True
@@ -443,4 +442,3 @@ class ConsoleSpanExporter:
 
     def shutdown(self):
         """No-op shutdown for test compatibility."""
-        pass

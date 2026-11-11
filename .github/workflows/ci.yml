@@ -1,4 +1,5 @@
 name: CI
+
 on:
   push:
     branches: [main]
@@ -14,19 +15,17 @@ jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Validate HTML
         run: |
-          # Check that index.html exists and is valid
           test -f docs/index.html && echo "docs/index.html exists"
-          # Basic HTML validation
           grep -q "<!DOCTYPE html>" docs/index.html && echo "Valid HTML doctype"
           grep -q "</html>" docs/index.html && echo "Valid HTML closing tag"
 
   security:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: aquasecurity/trivy-action@master
         with:
           scan-type: fs
@@ -42,16 +41,52 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       - name: Install zenodo-client
         run: pip install zenodo-client
       - name: Publish to Zenodo
         run: |
-          # This would be triggered on release publication
           echo "Zenodo publication triggered on release"
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Install ruff
+        run: pip install ruff
+      - name: Lint
+        run: ruff check .
+
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Install mypy
+        run: pip install mypy
+      - name: Typecheck
+        run: mypy -p agent_eval --ignore-missing-imports
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Install pytest + coverage
+        run: pip install pytest pytest-cov opentelemetry-sdk
+      - name: Test with coverage
+        run: python -m pytest tests/ -v --cov=. --cov-report=xml --cov-fail-under=80
+

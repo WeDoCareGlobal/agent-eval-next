@@ -11,13 +11,10 @@ Exposes:
 from __future__ import annotations
 
 import json
-import sys
-from typing import Optional
 
 import typer
 
 from agent_eval import (
-    AgentEval,
     ErrorClass,
     ToolDecision,
     eval_harness,
@@ -50,7 +47,7 @@ def record(
     duration_ms: float = typer.Option(0.0, "--duration-ms", help="Call duration in ms"),
     decision: str = typer.Option("allowed", "--decision", help="allowed | denied | approval"),
     error: str = typer.Option("none", "--error", help="none | timeout | policy_violation | rate_limit | unknown"),
-    metadata: Optional[str] = typer.Option(None, "--metadata", help="JSON metadata string"),
+    metadata: str | None = typer.Option(None, "--metadata", help="JSON metadata string"),
 ) -> None:
     """Record a single tool call into the harness."""
     meta = json.loads(metadata) if metadata else {}
@@ -67,7 +64,7 @@ def record(
 
 @app.command()
 def summary(
-    agent: Optional[str] = typer.Option(None, "--agent", help="Agent ID (omit for ecosystem summary)"),
+    agent: str | None = typer.Option(None, "--agent", help="Agent ID (omit for ecosystem summary)"),
 ) -> None:
     """Print evaluation metrics (JSON)."""
     data = eval_harness.get_metrics(agent) if agent else eval_harness.summary()
