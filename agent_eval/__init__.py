@@ -298,7 +298,7 @@ class UnifiedObservabilityHarness:
 
     def __init__(self, service_name: str = "agent-eval"):
         self._eval = AgentEval()
-        self._otel_tracer: "OpenTelemetryTracer" | None = None
+        self._otel_tracer: OpenTelemetryTracer | None = None
         self._service_name = service_name
 
     # -- record -------------------------------------------------------
@@ -442,4 +442,3 @@ class ConsoleSpanExporter:
 
     def shutdown(self):
         """No-op shutdown for test compatibility."""
-        pass
