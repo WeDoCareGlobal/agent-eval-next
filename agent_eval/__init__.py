@@ -8,14 +8,14 @@ Measures agent performance (latency, token usage, success rate, error classifica
 and traces every tool call (allowed / denied / approval).
 """
 
+import hashlib
+import json
 import threading
 import time
-import json
-import hashlib
-from dataclasses import dataclass, field, asdict
-from typing import Any, Optional
-from enum import Enum
+from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
+from enum import Enum
+from typing import Any, Optional
 
 
 class ToolDecision(Enum):
