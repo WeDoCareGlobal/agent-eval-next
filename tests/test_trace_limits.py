@@ -8,9 +8,8 @@ class TraceLimitTests(unittest.TestCase):
         ev = AgentEval()
         ev.record_tool_call("read", "agent")
         for limit in (0, -1, True, False, 1.5, "2"):
-            with self.subTest(limit=limit):
-                with self.assertRaises(ValueError):
-                    ev.get_traces(limit=limit)
+            with self.subTest(limit=limit), self.assertRaises(ValueError):
+                ev.get_traces(limit=limit)
 
     def test_limit_is_respected(self):
         ev = AgentEval()
